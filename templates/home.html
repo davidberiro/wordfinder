@@ -223,7 +223,7 @@
     </div>
 
 
-    <form action="/creategame/" method="post" class="form-inline create-game-holder">
+    <form action="{{ url_for('creategame') }}" method="post" class="form-inline create-game-holder">
       <div class="form-group">
         <label for="Join a game">Create a game:</label>
         <input type="username" class="form-control" id="username" placeholder="Enter name" name="username">
