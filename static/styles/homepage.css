@@ -1,0 +1,53 @@
+.jumbotron {
+  height: 700px;
+  border-width: 20px;
+  position: relative;
+}
+
+.crossword-container {
+  margin-top: 50px;
+}
+
+
+
+.create-game-holder {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+}
+
+table,
+tr,
+td {
+    border: 1px solid black;
+}
+
+table {
+    /*border-collapse: collapse;*/
+    margin: 0 auto;
+}
+
+tr {
+    height: 40px;
+}
+
+td {
+    width: 40px;
+}
+
+.crossword-container {
+  /*margin: 30px;*/
+}
+
+
+.join-game-holder {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+/*.init-game-button {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+}*/
