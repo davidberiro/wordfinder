@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-from flask import Flask, render_template, request
-=======
 from flask import Flask, render_template, request, session
 import os
->>>>>>> de6c0adb9f30bc32360e851640f3e175c427be50
-
+from letterGenerator import generator
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
@@ -12,18 +8,11 @@ app.secret_key = os.urandom(24)
 def home():
     return render_template('home.html')
 
-<<<<<<< HEAD
 @app.route('/creategame/', methods=['POST'])
 def creategame():
     username = request.form.get('username')
-    return render_template('game.html', name = username)
-=======
-@app.route('/creategame', methods=['POST'])
-def creategame():
-    username = request.form['username']
-    return username
-    
->>>>>>> de6c0adb9f30bc32360e851640f3e175c427be50
+    letters = generator(64)
+    return render_template('game.html', name = username, letters = letters)
 
 if __name__ == '__main__':
     app.run(debug=True)
