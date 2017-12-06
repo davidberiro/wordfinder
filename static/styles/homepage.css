@@ -2,13 +2,18 @@
   height: 700px;
   border-width: 20px;
   position: relative;
+    margin-top: 50px;
+}
+
+#timer {
+    padding-top: 20px;
 }
 
 .crossword-container {
   margin-top: 50px;
 }
 
-.start-game-button {
+#button-row {
   margin:40px;
 }
 

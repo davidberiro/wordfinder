@@ -11,8 +11,11 @@ def home():
 @app.route('/creategame/', methods=['POST'])
 def creategame():
     username = request.form.get('username')
-    letters = generator(64)
-    return render_template('game.html', name = username, letters = letters)
+    return render_template('game.html', name = username)
+
+@app.route('/randomletters/<int:num>')
+def randomletters(num):
+    return generator(num)
 
 if __name__ == '__main__':
     app.run(debug=True)
