@@ -17,6 +17,11 @@
   margin:40px;
 }
 
+.game-button {
+  margin: 20px;
+  
+}
+
 .create-game-holder {
   position: absolute;
   left: 10px;

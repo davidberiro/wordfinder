@@ -1,3 +1,5 @@
+const table = $("#game-table");
+
 
 $(".start-game-button").on('click', function(){
     $.ajax({url: "/randomletters/64", success: function(result){
@@ -22,14 +24,18 @@ $(".start-game-button").on('click', function(){
     }});
     $(this).css('display', 'none');
 
-    $('#button-row').append('<button type="submit" class="btn btn-default start-game-button">submit word</button>');
-    $('#button-row').append('<button type="submit" class="btn btn-default start-game-button">cancel word</button>');
+    $('#button-row').append('<button type="submit" class="btn btn-default game-button" id="submit-word">submit word</button>');
+    $('#button-row').append('<button type="submit" class="btn btn-default game-button" id="cancel-word">cancel word</button>');
 
     startgame();
 });
 
 
 var startgame = function () {
+    const submit_button = $("#submit-word");
+    const cancel_button = $("#cancel-word");
+    var letters_clicked = [];
+
     var timeLeft = 30;
     var elem = document.getElementById('timer');
 
@@ -44,4 +50,7 @@ var startgame = function () {
         timeLeft--;
       }
     }
+
+
+
 }
