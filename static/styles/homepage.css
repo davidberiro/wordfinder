@@ -1,5 +1,5 @@
 .jumbotron {
-  height: 700px;
+  height: 800px;
   border-width: 20px;
   position: relative;
     margin-top: 50px;
@@ -19,7 +19,10 @@
 
 .game-button {
   margin: 20px;
-  
+}
+
+#current-word {
+  margin-top: 10px;
 }
 
 .create-game-holder {
