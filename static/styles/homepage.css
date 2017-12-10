@@ -5,6 +5,10 @@
     margin-top: 50px;
 }
 
+.name-row {
+    font-size: 50px !important;
+}
+
 td {
   background-color: white;
 }

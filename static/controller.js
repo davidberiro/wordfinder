@@ -32,6 +32,7 @@ $(".start-game-button").on('click', function(){
     $('#button-row').append('<button type="submit" class="btn btn-default game-button" id="submit-word">submit word</button>');
     $('#button-row').append('<button type="submit" class="btn btn-default game-button" id="cancel-word">cancel word</button>');
 
+    //startgame should send request to server for multiplayer.. and check first if 2 players in room
     startgame();
 });
 

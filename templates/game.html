@@ -2,8 +2,22 @@
 
 {% block body %}
   <div class="jumbotron text-center">
-    <h1>{{name}}</h1>
-
+        <div class="row">
+            <div class="col-md-4">
+                      <p class="name-row">
+                          {{name}}
+                      </p>
+            </div>
+            <div class="col-md-4">
+                <p class="name-row">VS</p>
+            </div>
+            <div class="col-md-4">
+                <p class="name-row"></p>
+            </div>
+        </div>
+      <div class="row">
+          <p id="game-id">game id: {{ game_id }}</p>
+      </div>
     <!-- crossword container -->
     <!-- <div class="container-fluid"> -->
       <div class="row">

@@ -22,3 +22,6 @@ def generator(numOfLetters):
 
     random_letters = [numpy.random.choice(letters, p=freq).lower() for i in range(numOfLetters)]
     return json.dumps(random_letters)
+
+def id_generator(num):
+    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(num))
