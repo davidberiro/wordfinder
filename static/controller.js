@@ -1,5 +1,6 @@
 const table = $("#main-table");
 const color = "#ffffcc";
+var submitted_word;
 
 
 $(".start-game-button").on('click', function(){
@@ -44,6 +45,7 @@ var startgame = function () {
 
     var timeLeft = 30;
     var elem = document.getElementById('timer');
+    elem.innerHTML = timeLeft + ' seconds remaining';
 
     var timerId = setInterval(countdown, 1000);
 
@@ -56,6 +58,19 @@ var startgame = function () {
         timeLeft--;
       }
     }
+
+    cancel_button.on('click', function(){
+      table.find('td').css('background-color', 'white');
+      selected_word = "";
+      $("#current-word").val(selected_word);
+      lastClicked.row = -1;
+      lastClicked.col = -1;
+    });
+
+    submit_button.on('click', function(){
+      submitted_word = $("#current-word").val(selected_word);
+
+    });
 
     table.on('click', 'td', function(){
       // alert("clicked");

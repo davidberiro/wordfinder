@@ -5,6 +5,10 @@
     margin-top: 50px;
 }
 
+td {
+  background-color: white;
+}
+
 #timer {
     padding-top: 20px;
 }
@@ -35,6 +39,7 @@ table,
 tr,
 td {
     border: 1px solid black;
+
 }
 
 table {
