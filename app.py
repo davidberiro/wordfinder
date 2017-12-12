@@ -6,7 +6,8 @@ from flask_socketio import SocketIO, emit
 game_id_length = 5
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+# app.secret_key = os.urandom(24)
+app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
 
@@ -32,9 +33,9 @@ def joingame(gameid):
 def randomletters(num):
     return generator(num)
 
-@socketio.on('connect', namespace='/test')
+@socketio.on('connect')
 def test_connect():
-    emit('my response', {'data': 'Connected'})
+    # emit('my response', {'data': 'Connected'})
     print("hoohoo")
 
 if __name__ == '__main__':

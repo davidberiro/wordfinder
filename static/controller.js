@@ -2,7 +2,7 @@ const table = $("#main-table");
 const color = "#ffffcc";
 var submitted_word;
 
-var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
+var socket = io.connect('http://' + document.domain + ':' + location.port);
 
 // var socket = io.connect();
 // socket.on('connect', function() {
