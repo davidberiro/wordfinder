@@ -2,6 +2,13 @@ const table = $("#main-table");
 const color = "#ffffcc";
 var submitted_word;
 
+var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
+
+// var socket = io.connect();
+// socket.on('connect', function() {
+//     // we emit a connected message to let knwo the client that we are connected.
+//     socket.emit('client_connected', {data: 'New client!'});
+// });
 
 $(".start-game-button").on('click', function(){
     $.ajax({url: "/randomletters/64", success: function(result){
@@ -32,7 +39,6 @@ $(".start-game-button").on('click', function(){
     $('#button-row').append('<button type="submit" class="btn btn-default game-button" id="submit-word">submit word</button>');
     $('#button-row').append('<button type="submit" class="btn btn-default game-button" id="cancel-word">cancel word</button>');
 
-    //startgame should send request to server for multiplayer.. and check first if 2 players in room
     startgame();
 });
 
@@ -43,6 +49,7 @@ var startgame = function () {
     const cancel_button = $("#cancel-word");
     var selected_word = "";
     var lastClicked = {"row": -1, "col": -1};
+    var $prevClicked;
 
     var timeLeft = 30;
     var elem = document.getElementById('timer');
@@ -71,6 +78,7 @@ var startgame = function () {
     submit_button.on('click', function(){
       submitted_word = $("#current-word").val(selected_word);
 
+
     });
 
     table.on('click', 'td', function(){
@@ -86,12 +94,16 @@ var startgame = function () {
         $(this).css('background-color', color);
         lastClicked.row = row_number;
         lastClicked.col = col_number;
+        $prevClicked = $(this);
       }
-      else if ((Math.abs((row_number - lastClicked.row)) <= 1) && (Math.abs((col_number - lastClicked.col)) <= 1)) {
+      else if ((Math.abs((row_number - lastClicked.row)) <= 1) && (Math.abs((col_number - lastClicked.col)) <= 1)
+          && ((row_number-lastClicked.row != 0) || (col_number-lastClicked.col != 0))) {
         $(this).css('background-color', color);
+        $prevClicked.css('background-color', 'white');
         var selectedLetter = $(this).text();
         lastClicked.row = row_number;
         lastClicked.col = col_number;
+        $prevClicked = $(this);
       }
       else {
         // alert user illegal next letter?
