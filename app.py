@@ -1,17 +1,26 @@
-from flask import Flask, render_template, request, session
+import time
+from flask import Flask, render_template, request, session, jsonify
 import os
-from letterGenerator import generator, id_generator
+from letterGenerator import *
 from flask_socketio import SocketIO, emit
 
+chance_to_clean = 5
 game_id_length = 5
 
 app = Flask(__name__)
 # app.secret_key = os.urandom(24)
-app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
+# app.config['SECRET_KEY'] = 'secret!'
+# socketio = SocketIO(app)
 
 
-currentGames = {}
+currentGames = dict()
+
+def cleanup():
+    if randomChance(chance_to_clean):
+        print("CLEANING TIME")
+        for key, val in currentGames.items():
+            if abs(val["last_pinged"] - time.time()) > 5:
+                del currentGames[key]
 
 @app.route('/')
 def home():
@@ -23,20 +32,31 @@ def creategame():
     username = request.form.get('username')
     if (username == ""):
         username = "P1"
+    #appending gameid to currentGames dictionary
+    currentGames[game_id] = {"num_of_players": 1, "last_pinged": time.time(), "p1_name": username, "p2_name": None}
     return render_template('game.html', name = username, game_id = game_id)
 
 @app.route('/joingame/<gameid>')
 def joingame(gameid):
     return
 
+@app.route('/ping/<gameid>')
+def pinged(gameid):
+    print(currentGames)
+    print(gameid)
+    if gameid not in currentGames:
+        return 'some response'
+    currentGames[gameid]['last_pinged'] = time.time()
+    cleanup()
+    return jsonify(currentGames)
+
 @app.route('/randomletters/<int:num>')
 def randomletters(num):
     return generator(num)
 
-@socketio.on('connect')
-def test_connect():
-    # emit('my response', {'data': 'Connected'})
-    print("hoohoo")
+
+
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    # socketio.run(app, debug=True)
+    app.run(debug=True)

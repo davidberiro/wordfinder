@@ -5,6 +5,10 @@
     margin-top: 50px;
 }
 
+#game-id {
+  border: 1px solid black;
+}
+
 .name-row {
     font-size: 50px !important;
 }

@@ -25,3 +25,7 @@ def generator(numOfLetters):
 
 def id_generator(num):
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(num))
+
+def randomChance(chance):
+    randomNumber = random.randint(0, chance)
+    return randomNumber == 1

@@ -2,13 +2,23 @@ const table = $("#main-table");
 const color = "#ffffcc";
 var submitted_word;
 
-var socket = io.connect('http://' + document.domain + ':' + location.port);
+var gameid = $("#game-id").text().substr(9);
 
-// var socket = io.connect();
-// socket.on('connect', function() {
-//     // we emit a connected message to let knwo the client that we are connected.
-//     socket.emit('client_connected', {data: 'New client!'});
-// });
+var pingerId = setInterval(ping, 1000);
+
+function ping(){
+   $.ajax({
+      url: '/ping/' + gameid,
+      success: function(result){
+        //  alert('reply');
+      },
+      error: function(result){
+          // alert('timeout/error');
+          clearInterval(pingerId);
+
+      }
+   });
+};
 
 $(".start-game-button").on('click', function(){
     $.ajax({url: "/randomletters/64", success: function(result){
