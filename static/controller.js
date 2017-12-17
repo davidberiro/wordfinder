@@ -113,15 +113,7 @@ var startgame = function () {
 
     submit_button.on('click', function(){
         submitted_word = $("#current-word").val();
-        if (numOfSubmittedWords <= 6){
-            alert(my_table.children('td'))
-            // my_table.children('td')[numOfSubmittedWords].html(submitted_word);
-
-        }
-        else{
-            my_table.append("<tr><td>"+submitted_word+"</td></tr>");
-        }
-        numOfSubmittedWords+=1;
+        my_table.find('tbody').append("<tr><td>"+submitted_word+"</td></tr>");
         cancel_button.trigger('click');
 
     });
