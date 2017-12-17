@@ -21,8 +21,8 @@
       <file leaf-file-name="app.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="611">
-              <caret line="54" column="105" lean-forward="false" selection-start-line="54" selection-start-column="105" selection-end-line="54" selection-end-column="105" />
+            <state relative-caret-position="356">
+              <caret line="39" column="71" lean-forward="false" selection-start-line="39" selection-start-column="71" selection-end-line="39" selection-end-column="71" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -30,13 +30,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="game.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="game.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/game.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="16" lean-forward="true" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
+            <state relative-caret-position="595">
+              <caret line="315" column="39" lean-forward="false" selection-start-line="315" selection-start-column="27" selection-end-line="315" selection-end-column="39" />
               <folding>
-                <element signature="n#table#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#!!top" expanded="false" />
                 <element signature="n#table#0;n#div#1;n#div#0;n#div#2;n#div#0;n#!!top" expanded="false" />
               </folding>
             </state>
@@ -53,11 +52,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="controller.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="controller.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="16" lean-forward="false" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+            <state relative-caret-position="216">
+              <caret line="116" column="41" lean-forward="false" selection-start-line="116" selection-start-column="41" selection-end-line="116" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -84,6 +83,12 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>current</find>
+      <find>current-word</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -94,8 +99,8 @@
         <option value="$PROJECT_DIR$/letterGenerator.py" />
         <option value="$PROJECT_DIR$/templates/home.html" />
         <option value="$PROJECT_DIR$/static/styles/homepage.css" />
-        <option value="$PROJECT_DIR$/templates/game.html" />
         <option value="$PROJECT_DIR$/app.py" />
+        <option value="$PROJECT_DIR$/templates/game.html" />
         <option value="$PROJECT_DIR$/static/controller.js" />
       </list>
     </option>
@@ -270,7 +275,6 @@
         <state relative-caret-position="306">
           <caret line="18" column="23" lean-forward="true" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
           <folding>
-            <element signature="n#table#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#!!top" expanded="false" />
             <element signature="n#table#0;n#div#1;n#div#0;n#div#2;n#div#0;n#!!top" expanded="false" />
           </folding>
         </state>
@@ -325,7 +329,6 @@
         <state relative-caret-position="119">
           <caret line="7" column="31" lean-forward="false" selection-start-line="7" selection-start-column="31" selection-end-line="7" selection-end-column="31" />
           <folding>
-            <element signature="n#table#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#!!top" expanded="false" />
             <element signature="n#table#0;n#div#1;n#div#0;n#div#2;n#div#0;n#!!top" expanded="false" />
           </folding>
         </state>
@@ -447,19 +450,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="611">
-          <caret line="54" column="105" lean-forward="false" selection-start-line="54" selection-start-column="105" selection-end-line="54" selection-end-column="105" />
+        <state relative-caret-position="356">
+          <caret line="39" column="71" lean-forward="false" selection-start-line="39" selection-start-column="71" selection-end-line="39" selection-end-column="71" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/controller.js">
+    <entry file="file://$PROJECT_DIR$/templates/game.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="16" lean-forward="false" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
-          <folding />
+        <state relative-caret-position="595">
+          <caret line="315" column="39" lean-forward="false" selection-start-line="315" selection-start-column="27" selection-end-line="315" selection-end-column="39" />
+          <folding>
+            <element signature="n#table#0;n#div#1;n#div#0;n#div#2;n#div#0;n#!!top" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -471,14 +476,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/game.html">
+    <entry file="file://$PROJECT_DIR$/static/controller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="16" lean-forward="true" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
-          <folding>
-            <element signature="n#table#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#!!top" expanded="false" />
-            <element signature="n#table#0;n#div#1;n#div#0;n#div#2;n#div#0;n#!!top" expanded="false" />
-          </folding>
+        <state relative-caret-position="216">
+          <caret line="116" column="41" lean-forward="false" selection-start-line="116" selection-start-column="41" selection-end-line="116" selection-end-column="41" />
+          <folding />
         </state>
       </provider>
     </entry>

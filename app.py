@@ -37,7 +37,7 @@ def creategame():
         username = "P1"
     #appending gameid to currentGames dictionary
     currentGames[game_id] = {"num_of_players": 1, "last_pinged": time.time(), "p1_name": username, "p2_name": None, "game_started": "false"}
-    return render_template('game.html', name1 = username, game_id = game_id, player_num = "p1")
+    return render_template('game.html', name1 = username, name2 = "P2", game_id = game_id, player_num = "p1")
 
 @app.route('/joingame', methods=['POST'])
 def joingame():

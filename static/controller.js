@@ -5,7 +5,7 @@ var gameInfo = {"num_of_players": 1, "last_pinged": null, "p1_name": null, "p2_n
 var gameid = $("#game-id").text().substr(9);
 var initializedGame = false
 var numOfSubmittedWords = 0;
-var myTable = $(+"")
+var player = 0;
 
 var pingerId = setInterval(ping, 1000);
 
@@ -24,6 +24,9 @@ function ping(){
           $("#p2name").html(gameInfo["p2_name"]);
           $("#p2-words").html(gameInfo["p2_name"] + "'s words");
         }
+        if (gameInfo["num_of_players"] == 1){
+            player = "p1";
+        }
         if (gameInfo["game_started"] == "true" && !initializedGame){
           initializedGame = true;
           $(".start-game-button").trigger("click");
@@ -41,6 +44,9 @@ $(".start-game-button").on('click', function(){
     if (gameInfo["num_of_players"] == 1){
       alert("You can't play the game all by yourself...");
       return;
+    }
+    if (player == 0){
+        player = "p2";
     }
     tellServerGameStarted();
     $.ajax({url: "/randomletters/64", success: function(result){
@@ -76,6 +82,7 @@ var startgame = function () {
     // alert("Game started");
     const submit_button = $("#submit-word");
     const cancel_button = $("#cancel-word");
+    var my_table = $("#"+player+"-table");
     var selected_word = "";
     var lastClicked = {"row": -1, "col": -1};
     var $prevClicked;
@@ -105,10 +112,17 @@ var startgame = function () {
     });
 
     submit_button.on('click', function(){
-        table.find('td').css('background-color', 'white');
-        numOfSubmittedWords+=1;
-        submitted_word = $("#current-word").val(selected_word);
+        submitted_word = $("#current-word").val();
+        if (numOfSubmittedWords <= 6){
+            alert(my_table.children('td'))
+            // my_table.children('td')[numOfSubmittedWords].html(submitted_word);
 
+        }
+        else{
+            my_table.append("<tr><td>"+submitted_word+"</td></tr>");
+        }
+        numOfSubmittedWords+=1;
+        cancel_button.trigger('click');
 
     });
 
