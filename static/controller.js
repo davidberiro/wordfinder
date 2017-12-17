@@ -4,6 +4,8 @@ var submitted_word;
 var gameInfo = {"num_of_players": 1, "last_pinged": null, "p1_name": null, "p2_name": null, "game_started": "false"}
 var gameid = $("#game-id").text().substr(9);
 var initializedGame = false
+var numOfSubmittedWords = 0;
+var myTable = $(+"")
 
 var pingerId = setInterval(ping, 1000);
 
@@ -20,6 +22,7 @@ function ping(){
         gameInfo = result;
         if (gameInfo["num_of_players"] == 2){
           $("#p2name").html(gameInfo["p2_name"]);
+          $("#p2-words").html(gameInfo["p2_name"] + "'s words");
         }
         if (gameInfo["game_started"] == "true" && !initializedGame){
           initializedGame = true;
@@ -77,7 +80,7 @@ var startgame = function () {
     var lastClicked = {"row": -1, "col": -1};
     var $prevClicked;
 
-    var timeLeft = 30;
+    var timeLeft = 60;
     var elem = document.getElementById('timer');
     elem.innerHTML = timeLeft + ' seconds remaining';
 
@@ -102,7 +105,9 @@ var startgame = function () {
     });
 
     submit_button.on('click', function(){
-      submitted_word = $("#current-word").val(selected_word);
+        table.find('td').css('background-color', 'white');
+        numOfSubmittedWords+=1;
+        submitted_word = $("#current-word").val(selected_word);
 
 
     });
@@ -139,6 +144,8 @@ var startgame = function () {
       $("#current-word").val(selected_word);
     });
 
+var endgame = function(){
 
+}
 
 }

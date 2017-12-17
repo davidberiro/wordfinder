@@ -2,7 +2,10 @@ import time
 from flask import Flask, render_template, request, session, jsonify
 import os
 from letterGenerator import *
-from flask_socketio import SocketIO, emit
+# from flask_socketio import SocketIO, emit
+
+
+## moshes wordnik api: 41888df0924e3b4a0739a0242ce0db25313c90fa66ed57e28
 
 chance_to_clean = 100
 game_id_length = 5
@@ -34,7 +37,7 @@ def creategame():
         username = "P1"
     #appending gameid to currentGames dictionary
     currentGames[game_id] = {"num_of_players": 1, "last_pinged": time.time(), "p1_name": username, "p2_name": None, "game_started": "false"}
-    return render_template('game.html', name1 = username, game_id = game_id)
+    return render_template('game.html', name1 = username, game_id = game_id, player_num = "p1")
 
 @app.route('/joingame', methods=['POST'])
 def joingame():
@@ -49,7 +52,7 @@ def joingame():
     name1 = currentGames[game_id]["p1_name"]
     currentGames[game_id]["num_of_players"] = 2
     currentGames[game_id]["p2_name"] = username
-    return render_template('game.html', name1 = name1, name2=username, game_id = game_id);
+    return render_template('game.html', name1 = name1, name2=username, game_id = game_id, player_num = "p2");
 
 @app.route('/ping/<gameid>')
 def pinged(gameid):
