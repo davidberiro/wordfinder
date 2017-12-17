@@ -1,19 +1,32 @@
 const table = $("#main-table");
 const color = "#ffffcc";
 var submitted_word;
-
+var gameInfo = {"num_of_players": 1, "last_pinged": null, "p1_name": null, "p2_name": null, "game_started": "false"}
 var gameid = $("#game-id").text().substr(9);
+var initializedGame = false
 
 var pingerId = setInterval(ping, 1000);
+
+function tellServerGameStarted(){
+  $.ajax({
+    url: '/startgame/'+gameid
+  })
+}
 
 function ping(){
    $.ajax({
       url: '/ping/' + gameid,
       success: function(result){
-        //  alert('reply');
+        gameInfo = result;
+        if (gameInfo["num_of_players"] == 2){
+          $("#p2name").html(gameInfo["p2_name"]);
+        }
+        if (gameInfo["game_started"] == "true" && !initializedGame){
+          initializedGame = true;
+          $(".start-game-button").trigger("click");
+        }
       },
       error: function(result){
-          // alert('timeout/error');
           clearInterval(pingerId);
 
       }
@@ -21,6 +34,12 @@ function ping(){
 };
 
 $(".start-game-button").on('click', function(){
+    initializedGame = true;
+    if (gameInfo["num_of_players"] == 1){
+      alert("You can't play the game all by yourself...");
+      return;
+    }
+    tellServerGameStarted();
     $.ajax({url: "/randomletters/64", success: function(result){
         result = JSON.parse(result);
         var table = document.getElementById('main-table');
@@ -28,9 +47,6 @@ $(".start-game-button").on('click', function(){
 
         for(var i=0; i<rowLength; i+=1){
           var row = table.rows[i];
-
-          //your code goes here, looping over every row.
-          //cells are accessed as easy
 
           var cellLength = row.cells.length;
           for(var y=0; y<cellLength; y+=1){
