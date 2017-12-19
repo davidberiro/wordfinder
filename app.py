@@ -36,15 +36,16 @@ def creategame():
     if (username == ""):
         username = "P1"
     #appending gameid to currentGames dictionary
-    currentGames[game_id] = {"num_of_players": 1, "last_pinged": time.time(), "p1_name": username, "p2_name": None, "game_started": "false"}
-    return render_template('game.html', name1 = username, name2 = "P2", game_id = game_id, player_num = "p1")
+    currentGames[game_id] = {"num_of_players": 1, "last_pinged": time.time(), "p1_name": username, "p2_name": None, "game_started": "false",\
+    "crossword": None, "submitted_words": {"p1": [], "p2": []}}
+    return render_template('game.html', name1 = username, name2 = "P2", game_id = game_id)
 
 @app.route('/joingame', methods=['POST'])
 def joingame():
     username = request.form.get('username')
     game_id = request.form.get('game-id')
-    print(game_id)
-    print(currentGames)
+    # print(game_id)
+    # print(currentGames)
     if (username == ""):
         username = "P2"
     if game_id not in currentGames:
@@ -62,16 +63,29 @@ def pinged(gameid):
     cleanup()
     return jsonify(currentGames[gameid])
 
+@app.route('/pingforwords/<gameid>/<playerid>', methods=['POST'])
+def pingforwords(gameid, playerid):
+    if gameid not in currentGames:
+        return 'some error'
+    currentGames[gameid]['last_pinged'] = time.time()
+    cleanup()
+    words = request.json['words']
+    currentGames[gameid]["submitted_words"][playerid] = words
+    print(words)
+    return jsonify(currentGames[gameid])
+
+
 @app.route('/startgame/<gameid>')
 def startgame(gameid):
     if gameid not in currentGames:
         return 'some error'
     currentGames[gameid]["game_started"] = "true"
+    return jsonify(currentGames[gameid])
 
-@app.route('/randomletters/<int:num>')
-def randomletters(num):
-    return generator(num)
-
+@app.route('/randomletters/<int:num>/<gameid>')
+def randomletters(num, gameid):
+    currentGames[gameid]["crossword"] = generator(num)
+    return jsonify(currentGames[gameid])
 
 
 

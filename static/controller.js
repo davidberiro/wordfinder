@@ -1,93 +1,144 @@
 const table = $("#main-table");
 const color = "#ffffcc";
 var submitted_word;
-var gameInfo = {"num_of_players": 1, "last_pinged": null, "p1_name": null, "p2_name": null, "game_started": "false"}
+var submitted_words = [];
+var gameInfo = {"num_of_players": 1, "last_pinged": null, "p1_name": null, "p2_name": null, "game_started": "false", "crossword": null,
+                "submitted_words": {"p1": [], "p2": []}};
 var gameid = $("#game-id").text().substr(9);
 var initializedGame = false
-var numOfSubmittedWords = 0;
-var player = 0;
-
+var pingForWordsId;
 var pingerId = setInterval(ping, 1000);
+var player_id;
+var checked_player_id = false;
 
 function tellServerGameStarted(){
   $.ajax({
-    url: '/startgame/'+gameid
+    url: '/startgame/'+gameid,
+    success: function(response){
+      gameInfo = response;
+    }
   })
-}
+};
+
+function pingForSubmittedWords(){
+  $.ajax({
+    type: 'POST',
+    url: 'pingforwords/'+gameid+'/'+player_id,
+    data: JSON.stringify({"words": submitted_words}),
+    contentType: 'application/json;charset=UTF-8',
+    success: function(result){
+      updateSubmittedWords(result["submitted_words"], gameInfo["submitted_words"]);
+      gameInfo = result;
+    },
+    error: function(result){
+      clearInterval(pingForWordsId);
+    }
+  })
+};
 
 function ping(){
    $.ajax({
       url: '/ping/' + gameid,
       success: function(result){
         gameInfo = result;
+        if (!checked_player_id){
+          if (gameInfo["num_of_players"] == 1){
+            player_id = "p1";
+          }
+          else{
+            player_id = "p2";
+          }
+          checked_player_id = true;
+        }
         if (gameInfo["num_of_players"] == 2){
           $("#p2name").html(gameInfo["p2_name"]);
           $("#p2-words").html(gameInfo["p2_name"] + "'s words");
         }
-        if (gameInfo["num_of_players"] == 1){
-            player = "p1";
-        }
-        if (gameInfo["game_started"] == "true" && !initializedGame){
+        if (gameInfo["game_started"] == "true" && !initializedGame && gameInfo["crossword"] != null){
           initializedGame = true;
-          $(".start-game-button").trigger("click");
+          // $(".start-game-button").trigger("click");
+          startgame();
+          clearInterval(pingerId);
+          pingForWordsId = setInterval(pingForSubmittedWords, 1000);
         }
       },
       error: function(result){
           clearInterval(pingerId);
-
-      }
+        }
    });
 };
 
+function appendWord(word, player){
+  var id = "#"+player+"-table";
+  $(id).append("<tr><td>"+word+"</td></tr>");
+}
+
+function updateSubmittedWords(updated_words, old_words){
+  p1_old_words = old_words["p1"];
+  p2_old_words = old_words["p2"];
+  p2_updated_words = updated_words["p2"];
+  p1_updated_words = updated_words["p1"];
+
+  if (p1_updated_words.length > p1_old_words.length){
+    appendWord(p1_updated_words[p1_updated_words.length-1], "p1");
+  }
+  if (p2_updated_words.length > p2_old_words.length){
+    appendWord(p2_updated_words[p2_updated_words.length-1], "p2");
+  }
+}
+
 $(".start-game-button").on('click', function(){
-    initializedGame = true;
+    // initializedGame = true;
     if (gameInfo["num_of_players"] == 1){
       alert("You can't play the game all by yourself...");
       return;
     }
-    if (player == 0){
-        player = "p2";
-    }
+    $.ajax({
+      url: "/randomletters/64/"+gameid,
+      success: function(result){
+        gameInfo = result;
+      }
+
+    });
     tellServerGameStarted();
-    $.ajax({url: "/randomletters/64", success: function(result){
-        result = JSON.parse(result);
-        var table = document.getElementById('main-table');
-        var rowLength = table.rows.length;
 
-        for(var i=0; i<rowLength; i+=1){
-          var row = table.rows[i];
+    // startgame();
+});
 
-          var cellLength = row.cells.length;
-          for(var y=0; y<cellLength; y+=1){
-            var cell = row.cells[y];
-            cell.innerHTML = result[0];
-            result.shift();
-          }
-        }
+var initTable = function(table) {
+  result = JSON.parse(table);
+  var table = document.getElementById('main-table');
+  var rowLength = table.rows.length;
 
-    }});
-    $(this).css('display', 'none');
+  for(var i=0; i<rowLength; i+=1){
+    var row = table.rows[i];
 
-    // <form class="form-inline"><input type="text" class="form-control" id="current-word" value="" readonly></form>
+    var cellLength = row.cells.length;
+    for(var y=0; y<cellLength; y+=1){
+      var cell = row.cells[y];
+      cell.innerHTML = result[0];
+      result.shift();
+    }
+  }
+};
+
+var startgame = function () {
+
+    $(".start-game-button").css('display', 'none');
+    initTable(gameInfo["crossword"]);
 
     $('#current-word-row').append('<form class="form-inline"><input type="text" class="form-control" id="current-word" value="" readonly></form>');
     $('#button-row').append('<button type="submit" class="btn btn-default game-button" id="submit-word">submit word</button>');
     $('#button-row').append('<button type="submit" class="btn btn-default game-button" id="cancel-word">cancel word</button>');
 
-    startgame();
-});
-
-
-var startgame = function () {
     // alert("Game started");
     const submit_button = $("#submit-word");
     const cancel_button = $("#cancel-word");
-    var my_table = $("#"+player+"-table");
     var selected_word = "";
     var lastClicked = {"row": -1, "col": -1};
     var $prevClicked;
 
-    var timeLeft = 60;
+    var timeLeft = 30;
     var elem = document.getElementById('timer');
     elem.innerHTML = timeLeft + ' seconds remaining';
 
@@ -112,10 +163,9 @@ var startgame = function () {
     });
 
     submit_button.on('click', function(){
-        submitted_word = $("#current-word").val();
-        my_table.find('tbody').append("<tr><td>"+submitted_word+"</td></tr>");
-        cancel_button.trigger('click');
-
+      submitted_word = $("#current-word").val();
+      submitted_words.push(submitted_word);
+      cancel_button.trigger('click');
     });
 
     table.on('click', 'td', function(){
@@ -150,8 +200,4 @@ var startgame = function () {
       $("#current-word").val(selected_word);
     });
 
-var endgame = function(){
-
-}
-
-}
+  };
