@@ -2,19 +2,17 @@ import time
 from flask import Flask, render_template, request, session, jsonify
 import os
 from letterGenerator import *
+from urllib2 import Request, urlopen, URLError
 # from flask_socketio import SocketIO, emit
 
-
-## moshes wordnik api: 41888df0924e3b4a0739a0242ce0db25313c90fa66ed57e28
 
 chance_to_clean = 100
 game_id_length = 5
 
 app = Flask(__name__)
-# app.secret_key = os.urandom(24)
-# app.config['SECRET_KEY'] = 'secret!'
-# socketio = SocketIO(app)
 
+baseUrl = "http://api.wordnik.com/v4/word.json/"
+api_key = "/api_key=810e3e6d0084bc5c8200f024bb5062c4074589bfeba2e58f7"
 
 currentGames = dict()
 
@@ -44,8 +42,6 @@ def creategame():
 def joingame():
     username = request.form.get('username')
     game_id = request.form.get('game-id')
-    # print(game_id)
-    # print(currentGames)
     if (username == ""):
         username = "P2"
     if game_id not in currentGames:
@@ -71,7 +67,6 @@ def pingforwords(gameid, playerid):
     cleanup()
     words = request.json['words']
     currentGames[gameid]["submitted_words"][playerid] = words
-    print(words)
     return jsonify(currentGames[gameid])
 
 
@@ -87,6 +82,32 @@ def randomletters(num, gameid):
     currentGames[gameid]["crossword"] = generator(num)
     return jsonify(currentGames[gameid])
 
+@app.route('/endgame/<gameid>')
+def endgame(gameid):
+    p1_word_list = currentGames[gameid]["submitted_words"]["p1"]
+    p2_word_list = currentGames[gameid]["submitted_words"]["p2"]
+    p1_points = 0
+    p2_points = 0
+    for word in p1_word_list:
+        request = Request(baseUrl+word+api_key)
+        try:
+            response=urlopen(request)
+            p1_points+=len(word)
+        except URLError, e:
+            continue
+    for word in p2_word_list:
+        request = Request(baseUrl+word+api_key)
+        try:
+            response=urlopen(request)
+            p2_points+=len(word)
+        except URLError, e:
+            continue
+    print("p1 points: " + str(p1_points))
+    print("p2 points: " + str(p2_points))
+    if (p1_points>p2_points):
+        return "P1 wins"
+    else:
+        return "P2 wins"
 
 
 if __name__ == '__main__':

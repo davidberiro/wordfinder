@@ -56,7 +56,6 @@ function ping(){
         }
         if (gameInfo["game_started"] == "true" && !initializedGame && gameInfo["crossword"] != null){
           initializedGame = true;
-          // $(".start-game-button").trigger("click");
           startgame();
           clearInterval(pingerId);
           pingForWordsId = setInterval(pingForSubmittedWords, 1000);
@@ -138,7 +137,7 @@ var startgame = function () {
     var lastClicked = {"row": -1, "col": -1};
     var $prevClicked;
 
-    var timeLeft = 30;
+    var timeLeft = 60;
     var elem = document.getElementById('timer');
     elem.innerHTML = timeLeft + ' seconds remaining';
 
@@ -147,7 +146,7 @@ var startgame = function () {
     function countdown() {
       if (timeLeft == 0) {
         clearTimeout(timerId);
-        // endGame()????
+        endgame()
       } else {
         elem.innerHTML = timeLeft + ' seconds remaining';
         timeLeft--;
@@ -164,6 +163,9 @@ var startgame = function () {
 
     submit_button.on('click', function(){
       submitted_word = $("#current-word").val();
+      if (submitted_word == ""){
+        return;
+      }
       submitted_words.push(submitted_word);
       cancel_button.trigger('click');
     });
@@ -201,3 +203,10 @@ var startgame = function () {
     });
 
   };
+
+function endgame(){
+  $.ajax({
+    type: 'GET',
+    url: 'endgame/'+gameid,
+  })
+}
