@@ -2,8 +2,13 @@ import time
 from flask import Flask, render_template, request, session, jsonify
 import os
 from letterGenerator import *
-from urllib2 import Request, urlopen, URLError
-# from flask_socketio import SocketIO, emit
+from wordnik import *
+
+#connecting to wordnik api
+apiUrl = 'http://api.wordnik.com/v4'
+apiKey = '810e3e6d0084bc5c8200f024bb5062c4074589bfeba2e58f7'
+client = swagger.ApiClient(apiKey, apiUrl)
+wordApi = WordApi.WordApi(client)
 
 
 chance_to_clean = 100
@@ -89,25 +94,17 @@ def endgame(gameid):
     p1_points = 0
     p2_points = 0
     for word in p1_word_list:
-        request = Request(baseUrl+word+api_key)
-        try:
-            response=urlopen(request)
-            p1_points+=len(word)
-        except URLError, e:
-            continue
+        if wordApi.getDefinitions(word) != None:
+            p1_points += len(word)
     for word in p2_word_list:
-        request = Request(baseUrl+word+api_key)
-        try:
-            response=urlopen(request)
-            p2_points+=len(word)
-        except URLError, e:
-            continue
+        if wordApi.getDefinitions(word) != None:
+            p2_points += len(word)
     print("p1 points: " + str(p1_points))
     print("p2 points: " + str(p2_points))
     if (p1_points>p2_points):
-        return "P1 wins"
+        return "P1 wins with " + str(p1_points) + "while P2 has " + str(p2_points)
     else:
-        return "P2 wins"
+        return "P2 wins with " + str(p2_points) + "while P1 has " + str(p1_points)
 
 
 if __name__ == '__main__':

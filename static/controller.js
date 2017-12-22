@@ -208,5 +208,8 @@ function endgame(){
   $.ajax({
     type: 'GET',
     url: 'endgame/'+gameid,
+    success: function(response){
+      $('#main-container').html(response);
+    }
   })
 }
