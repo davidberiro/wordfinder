@@ -87,24 +87,40 @@ def randomletters(num, gameid):
     currentGames[gameid]["crossword"] = generator(num)
     return jsonify(currentGames[gameid])
 
+@app.route('/checkword/<word>')
+def checkword(word):
+    if wordApi.getDefinitions(word) != None:
+        return jsonify({"result": "true"})
+    return jsonify({"result": "false"})
+
 @app.route('/endgame/<gameid>')
 def endgame(gameid):
     p1_word_list = currentGames[gameid]["submitted_words"]["p1"]
     p2_word_list = currentGames[gameid]["submitted_words"]["p2"]
+    p1_dict = dict()
+    p2_dict = dict()
     p1_points = 0
     p2_points = 0
     for word in p1_word_list:
         if wordApi.getDefinitions(word) != None:
             p1_points += len(word)
+            p1_dict[word] = len(word)
+        else:
+            p1_dict[word] = 0
     for word in p2_word_list:
         if wordApi.getDefinitions(word) != None:
             p2_points += len(word)
-    print("p1 points: " + str(p1_points))
-    print("p2 points: " + str(p2_points))
-    if (p1_points>p2_points):
-        return "P1 wins with " + str(p1_points) + "while P2 has " + str(p2_points)
-    else:
-        return "P2 wins with " + str(p2_points) + "while P1 has " + str(p1_points)
+            p2_dict[word] = len(word)
+        else:
+            p2_dict[word] = 0
+    return jsonify({"p1": p1_dict, "p2": p2_dict, "p1_points": p1_points, "p2_points": p2_points})
+
+    # print("p1 points: " + str(p1_points))
+    # print("p2 points: " + str(p2_points))
+    # if (p1_points>p2_points):
+    #     return "P1 wins with " + str(p1_points) + "while P2 has " + str(p2_points)
+    # else:
+    #     return "P2 wins with " + str(p2_points) + "while P1 has " + str(p1_points)
 
 
 if __name__ == '__main__':

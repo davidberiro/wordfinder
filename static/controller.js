@@ -69,7 +69,7 @@ function ping(){
 
 function appendWord(word, player){
   var id = "#"+player+"-table";
-  $(id).append("<tr><td>"+word+"</td></tr>");
+  $(id).append("<tr><td id="+player+word+">"+word+"</td></tr>");
 }
 
 function updateSubmittedWords(updated_words, old_words){
@@ -146,6 +146,7 @@ var startgame = function () {
     function countdown() {
       if (timeLeft == 0) {
         clearTimeout(timerId);
+        $("#timer").html("");
         endgame()
       } else {
         elem.innerHTML = timeLeft + ' seconds remaining';
@@ -164,6 +165,11 @@ var startgame = function () {
     submit_button.on('click', function(){
       submitted_word = $("#current-word").val();
       if (submitted_word == ""){
+        return;
+      }
+      if ($.inArray(submitted_word, submitted_words) != -1){
+        alert("Cannot submit same word twice");
+        cancel_button.trigger('click');
         return;
       }
       submitted_words.push(submitted_word);
@@ -205,11 +211,40 @@ var startgame = function () {
   };
 
 function endgame(){
+  clearInterval(pingForWordsId);
   $.ajax({
     type: 'GET',
     url: 'endgame/'+gameid,
     success: function(response){
-      $('#main-container').html(response);
+      display_score(response);
     }
   })
+};
+
+function display_score(results){
+  p1_results = results["p1"]
+  p2_results = results["p2"]
+  p1_score = results["p1_points"]
+  p2_score = results["p2_points"]
+  for (var word in p1_results){
+    $("#p1"+word).html(word + " " + p1_results[word] + " points");
+  }
+  for (var word in p2_results){
+    $("#p2"+word).html(word + " " + p2_results[word] + " points");
+  }
+  if (p1_score == p2_score){
+    alert("GAME IS A TIE!");
+  }
+  else{
+    var winner = (p1_score > p2_score) ? gameInfo["p1_name"] : gameInfo["p2_name"];
+    alert(winner + " WINS!");
+  }
 }
+
+function checkword(word){
+  $.get('checkword/'+word, function(response){
+      var isword = (response["result"] == "true") ? true : false;
+      alert(isword);
+      return isword;
+    });
+  }
